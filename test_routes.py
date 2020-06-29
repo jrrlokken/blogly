@@ -1,6 +1,6 @@
 from unittest import TestCase
 from app import app
-from models import db, User
+from models import db, User, Post
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly_test'
 app.config['SQLALCHEMY_ECHO'] = False
@@ -24,6 +24,16 @@ class UserViewsTestCase(TestCase):
         db.session.commit()
 
         self.user_id = user.id
+
+        Post.query.delete()
+
+        post = Post(title="TestPost", content="Test Post.",
+                    user_id=self.user_id)
+
+        db.session.add(post)
+        db.session.commit()
+
+        self.post_id = post.id
 
     def tearDown(self):
         """Clean up."""
