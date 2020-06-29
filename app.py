@@ -52,7 +52,7 @@ def show_user(user_id):
     """Show details of a single user."""
 
     user = User.query.get_or_404(user_id)
-    return render_template('user_details.html', user=user)
+    return render_template('user_detail.html', user=user)
 
 
 @app.route('/users/<int:user_id>/edit')
