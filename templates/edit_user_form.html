@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <h1>Edit User</h1>
+  <form class="form-group" method="POST">
+    <div class="row my-2">
+      <label for="first_name" class="mr-1">First Name</label>
+      <input type="text" name="first_name" value="{{ user.first_name }}"/>
+    </div>
+    <div class="row my-2">
+      <label for="last_name" class="mr-1">Last Name</label>
+      <input type="text" name="last_name" value="{{ user.last_name }}" />
+    </div>
+    <div class="row my-2">
+      <label for="image_url" class="mr-1">Image URL</label>
+      <input type="text" name="image_url" value="{{ user.image_url }}" />
+    </div>
+    <div class="row my-2">
+      <a class="btn btn-outline-warning" href="/users/{{ user.id }}">Cancel</a>
+      <button type="submit" class="btn btn-success ml-2">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

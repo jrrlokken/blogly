@@ -22,7 +22,8 @@ class User(db.Model):
     last_name = db.Column(db.String(50),
                           nullable=False)
 
-    image_url = db.Column(db.String(200))
+    image_url = db.Column(
+        db.String(200), nullable=False, default='https://via.placeholder.com/200')
 
     def __repr__(self):
         """Show info about user."""
