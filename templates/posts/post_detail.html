@@ -4,6 +4,9 @@
   <p>{{ post.content }}</p>
   <p class="lead">By {{ post.user.first_name }} {{ post.user.last_name}}</p>
   <form class="mb-4">
+    <a class="btn btn-outline-warning mr-2" href="/users/{{ post.user_id }}"
+      >Back</a
+    >
     <button
       class="btn btn-primary"
       formaction="/posts/{{ post.id }}/edit"
