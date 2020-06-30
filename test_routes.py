@@ -15,8 +15,9 @@ class UserViewsTestCase(TestCase):
     """Test the views for users."""
 
     def setUp(self):
-        """Add sample user."""
+        """Add sample user and sample post."""
 
+        Post.query.delete()
         User.query.delete()
 
         user = User(first_name="Test", last_name="User")
@@ -24,8 +25,6 @@ class UserViewsTestCase(TestCase):
         db.session.commit()
 
         self.user_id = user.id
-
-        Post.query.delete()
 
         post = Post(title="TestPost", content="Test Post.",
                     user_id=self.user_id)
@@ -70,3 +69,33 @@ class UserViewsTestCase(TestCase):
                               follow_redirects=True)
 
             self.assertEqual(res.status_code, 200)
+
+
+class PostViewsTestCase(TestCase):
+    """Test the views for posts."""
+
+       def test_new_post_form(self):
+            with app.test_client() as client:
+                res = client.get("/users/{self.user_id}/posts/new")
+                html = res.get_data(as_text=True)
+
+                self.assertEqual(res.status_code, 200)
+                self.assertIn('<h1>Add A Post for Test User</h1>', html)
+
+        def test_edit_post_form():
+          with app.test_client as client:
+            res. = client.get("/posts/{self.post_id}/edit")
+            html = res.get_data(as_text=True)
+
+            self.assertEqual(res.status.code, 200)
+            self.assertIn('<h1>Edit Post</h1>', html)
+
+        def test_delete_post(self):
+            with app.test_client() as client:
+                res = client.post(f"/posts/{self.post_id}/delete",
+                                  data={"post_id": "{self.post_id}"},
+                                  follow_redirects=True)
+
+                self.assertEqual(res.status_code, 200)
+
+        
