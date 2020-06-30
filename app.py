@@ -39,9 +39,9 @@ def new_user_form():
 
 @app.route('/users/new', methods=['POST'])
 def new_user():
-    first_name = request.form["first-name"]
-    last_name = request.form["last-name"]
-    image_url = request.form["image-url"]
+    first_name = request.form["first_name"]
+    last_name = request.form["last_name"]
+    image_url = request.form["image_url"]
 
     new_user = User(first_name=first_name,
                     last_name=last_name, image_url=image_url)
@@ -162,3 +162,15 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(f"/users/{post.user_id}")
+
+# Tag routes
+
+
+# @app.route('/tags')
+# @app.route('/tags/<int:tag_id>')
+# @app.route('/tags/new')
+# @app.route('/tags/new', methods=["POST"])
+# @app.route('/tags/<int:tag_id>/edit')
+# @app.route('/tags/<int:tag_id>/edit', methods=["POST"])
+# @app.route('/tags/<int:tag_id>/delete', methods=["POST"])
+#
