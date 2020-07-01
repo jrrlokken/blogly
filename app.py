@@ -204,7 +204,34 @@ def new_tag():
     return redirect(f"/users/{user_id}")
 
 
-# @app.route('/tags/<int:tag_id>/edit')
-# @app.route('/tags/<int:tag_id>/edit', methods=["POST"])
-# @app.route('/tags/<int:tag_id>/delete', methods=["POST"])
-#
+@app.route('/tags/<int:tag_id>/edit')
+def show_edit_tag_form(tag_id):
+    """Show form to edit an existing tag."""
+
+    tag = Tag.query.get_or_404(tag_id)
+    return render_template('tags/edit_tag_form.html', tag=tag)
+
+
+@app.route('/tags/<int:tag_id>/edit', methods=["POST"])
+def edit_tag(tag_id):
+    """Handle update of existing tag."""
+
+    tag = Tag.query.get_or_404(tag_id)
+    tag.name = request.form['tag_name']
+
+    db.session.add(tag)
+    db.session.commit()
+
+    return redirect(f"/users")
+
+
+@app.route('/tags/<int:tag_id>/delete', methods=["POST"])
+def delete_tag(tag_id):
+    """Handle deleting a tag."""
+
+    tag = Tag.query.get_or_404(tag_id)
+
+    db.session.delete(tag)
+    db.session.commit()
+
+    return redirect(f"/users")
