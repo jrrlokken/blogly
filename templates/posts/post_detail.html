@@ -1,27 +1,24 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container mt-5">
-  <h1>{{ post.title }}</h1>
-  <p>{{ post.content }}</p>
-  <p class="lead">By {{ post.user.first_name }} {{ post.user.last_name}}</p>
-  <form class="mb-4">
-    <a class="btn btn-outline-warning mr-2" href="/users/{{ post.user_id }}"
-      >Back</a
-    >
-    <button
-      class="btn btn-primary"
-      formaction="/posts/{{ post.id }}/edit"
-      formmethod="GET"
-    >
-      Edit
-    </button>
-    <button
-      class="btn btn-danger ml-2"
-      formaction="/posts/{{ post.id }}/delete"
-      formmethod="POST"
-    >
-      Delete
-    </button>
-  </form>
-</div>
-
+<h1>{{ post.title }}</h1>
+<p>{{ post.content }}</p>
+<p class="lead">By {{ post.user.first_name }} {{ post.user.last_name}}</p>
+<form class="mb-4">
+  <a class="btn btn-outline-warning mr-2" href="/users/{{ post.user_id }}"
+    >Back</a
+  >
+  <button
+    class="btn btn-primary"
+    formaction="/posts/{{ post.id }}/edit"
+    formmethod="GET"
+  >
+    Edit
+  </button>
+  <button
+    class="btn btn-danger ml-2"
+    formaction="/posts/{{ post.id }}/delete"
+    formmethod="POST"
+  >
+    Delete
+  </button>
+</form>
 {% endblock %}

@@ -1,23 +1,20 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container mt-5">
-  <h1>Add A User</h1>
-  <form class="form-group" method="POST">
-    <div class="row my-2">
-      <label for="first_name" class="mr-1">First Name</label>
-      <input type="text" name="first_name" required />
-    </div>
-    <div class="row my-2">
-      <label for="last_name" class="mr-1">Last Name</label>
-      <input type="text" name="last_name" required />
-    </div>
-    <div class="row my-2">
-      <label for="image_url" class="mr-1">Image URL</label>
-      <input type="text" name="image_url" />
-    </div>
-    <div class="row my-2">
-      <button class="btn btn-success">Add</button>
-    </div>
-  </form>
-</div>
-
+<h1>Add A User</h1>
+<form class="form-group" method="POST">
+  <div class="row my-2">
+    <label for="first_name" class="mr-1">First Name</label>
+    <input type="text" name="first_name" required />
+  </div>
+  <div class="row my-2">
+    <label for="last_name" class="mr-1">Last Name</label>
+    <input type="text" name="last_name" required />
+  </div>
+  <div class="row my-2">
+    <label for="image_url" class="mr-1">Image URL</label>
+    <input type="text" name="image_url" />
+  </div>
+  <div class="row my-2">
+    <button class="btn btn-success">Add</button>
+  </div>
+</form>
 {% endblock %}

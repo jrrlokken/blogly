@@ -1,10 +1,11 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="container mt-5">
-  <h1>Tags</h1>
+{% extends 'base.html' %} {% block content %}
+<h1>Tags</h1>
+<ul>
   {% for tag in tags %}
-    <li>{{ tag.name }}</li>
+  <li>
+    <a href="/tags/{{ tag.id }}">{{ tag.name }}</a>
+  </li>
   {% endfor %}
-  <a class='btn btn-primary' href="/tags/new">Add Tag</a>
-</div>
+</ul>
+<p><a class="btn btn-primary" href="/tags/new">Add Tag</a></p>
 {% endblock %}
