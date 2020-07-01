@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post, Tag, PostTag
 
 app = Flask(__name__)
 
@@ -169,13 +169,41 @@ def delete_post(post_id):
 @app.route('/tags')
 def show_tags():
     """Show list of tags."""
+    tags = Tag.query.all()
+    return render_template('tags/tags.html', tags=tags)
 
-    return render_template('tags.html')
+
+@app.route('/tags/<int:tag_id>')
+def show_tag(tag_id):
+    """Show details and post for a single tag."""
+
+    tag = Tag.query.get_or_404(tag_id)
+    posts_tags = PostTag.query.filter_by(tag_id=tag_id)
+    return render_template('tags/tag_detail.html', tag=tag, posts_tags=posts_tags)
 
 
-# @app.route('/tags/<int:tag_id>')
-# @app.route('/tags/new')
-# @app.route('/tags/new', methods=["POST"])
+@app.route('/tags/new')
+def show_new_tag_form():
+    """Show for for adding a new tag."""
+
+    return render_template('tags/new_tag_form.html')
+
+
+@app.route('/tags/new', methods=["POST"])
+def new_tag():
+    """Handle adding a new tag."""
+
+    name = request.form["tag_name"]
+    user = User.query.get_or_404(user_id)
+
+    new_post = Post(title=title,
+                    content=content, user=user)
+    db.session.add(new_post)
+    db.session.commit()
+    flash(f"Post '{new_post.title}' added.")
+    return redirect(f"/users/{user_id}")
+
+
 # @app.route('/tags/<int:tag_id>/edit')
 # @app.route('/tags/<int:tag_id>/edit', methods=["POST"])
 # @app.route('/tags/<int:tag_id>/delete', methods=["POST"])

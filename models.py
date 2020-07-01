@@ -52,6 +52,9 @@ class Tag(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(20), nullable=True, unique=True)
+    posts = db.relationship("Post",
+                            secondary="posts_tags",
+                            backref="tags")
 
 
 class PostTag(db.Model):
