@@ -166,7 +166,13 @@ def delete_post(post_id):
 # Tag routes
 
 
-# @app.route('/tags')
+@app.route('/tags')
+def show_tags():
+    """Show list of tags."""
+
+    return render_template('tags.html')
+
+
 # @app.route('/tags/<int:tag_id>')
 # @app.route('/tags/new')
 # @app.route('/tags/new', methods=["POST"])
