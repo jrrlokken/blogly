@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, User, Post
+from models import db, connect_db, User, Post, Tag, PostTag
 
 app = Flask(__name__)
 
@@ -39,9 +39,9 @@ def new_user_form():
 
 @app.route('/users/new', methods=['POST'])
 def new_user():
-    first_name = request.form["first-name"]
-    last_name = request.form["last-name"]
-    image_url = request.form["image-url"]
+    first_name = request.form["first_name"]
+    last_name = request.form["last_name"]
+    image_url = request.form["image_url"]
 
     new_user = User(first_name=first_name,
                     last_name=last_name, image_url=image_url)
@@ -162,3 +162,76 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(f"/users/{post.user_id}")
+
+# Tag routes
+
+
+@app.route('/tags')
+def show_tags():
+    """Show list of tags."""
+    tags = Tag.query.all()
+    return render_template('tags/tags.html', tags=tags)
+
+
+@app.route('/tags/<int:tag_id>')
+def show_tag(tag_id):
+    """Show details and post for a single tag."""
+
+    tag = Tag.query.get_or_404(tag_id)
+    posts_tags = PostTag.query.filter_by(tag_id=tag_id)
+    return render_template('tags/tag_detail.html', tag=tag, posts_tags=posts_tags)
+
+
+@app.route('/tags/new')
+def show_new_tag_form():
+    """Show for for adding a new tag."""
+
+    return render_template('tags/new_tag_form.html')
+
+
+@app.route('/tags/new', methods=["POST"])
+def new_tag():
+    """Handle adding a new tag."""
+
+    name = request.form["tag_name"]
+    user = User.query.get_or_404(user_id)
+
+    new_post = Post(title=title,
+                    content=content, user=user)
+    db.session.add(new_post)
+    db.session.commit()
+    flash(f"Post '{new_post.title}' added.")
+    return redirect(f"/users/{user_id}")
+
+
+@app.route('/tags/<int:tag_id>/edit')
+def show_edit_tag_form(tag_id):
+    """Show form to edit an existing tag."""
+
+    tag = Tag.query.get_or_404(tag_id)
+    return render_template('tags/edit_tag_form.html', tag=tag)
+
+
+@app.route('/tags/<int:tag_id>/edit', methods=["POST"])
+def edit_tag(tag_id):
+    """Handle update of existing tag."""
+
+    tag = Tag.query.get_or_404(tag_id)
+    tag.name = request.form['tag_name']
+
+    db.session.add(tag)
+    db.session.commit()
+
+    return redirect(f"/users")
+
+
+@app.route('/tags/<int:tag_id>/delete', methods=["POST"])
+def delete_tag(tag_id):
+    """Handle deleting a tag."""
+
+    tag = Tag.query.get_or_404(tag_id)
+
+    db.session.delete(tag)
+    db.session.commit()
+
+    return redirect(f"/users")
