@@ -1,15 +1,20 @@
 {% extends 'base.html' %} {% block content %}
-<h1>Create a tag</h1>
+<h1>Edit tag {{ tag.name }}</h1>
 
 <form method="POST">
   <div class="form-group row">
     <label for="tag_name" class="col-sm-2 col-form-label">Name</label>
     <div class="col-sm-10">
-      <input name="tag_name" class="form-control" required />
+      <input
+        name="tag_name"
+        class="form-control"
+        value="{{ tag.name }}"
+        required
+      />
     </div>
   </div>
   <div class="row my-2">
-    <a class="btn btn-outline-warning" href="/users">Cancel</a>
+    <a class="btn btn-outline-warning" href="/tags">Cancel</a>
     <button type="submit" class="btn btn-success ml-2">Edit</button>
   </div>
 </form>
