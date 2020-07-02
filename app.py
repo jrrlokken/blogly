@@ -57,7 +57,6 @@ def show_user(user_id):
 
     user = User.query.get_or_404(user_id)
     posts = Post.query.filter_by(user_id=user_id).all()
-    print(posts)
     return render_template('users/user_detail.html', user=user, posts=posts)
 
 
@@ -135,7 +134,8 @@ def show_edit_post(post_id):
     """Show the edit form for an existing post."""
 
     post = Post.query.get_or_404(post_id)
-    return render_template('posts/edit_post_form.html', post=post)
+    tags = Tag.query.all()
+    return render_template('posts/edit_post_form.html', post=post, tags=tags)
 
 
 @app.route('/posts/<int:post_id>/edit', methods=["POST"])
@@ -146,8 +146,12 @@ def update_post(post_id):
     post.title = request.form['title']
     post.content = request.form['content']
 
+    tag_ids = [int(num) for num in request.form.getlist("tags")]
+    post.tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+
     db.session.add(post)
     db.session.commit()
+    flash(f"Post '{post.title}' updated.")
 
     return redirect(f"/users/{post.user_id}")
 
@@ -160,6 +164,7 @@ def delete_post(post_id):
 
     db.session.delete(post)
     db.session.commit()
+    flash(f"Post '{post.title}' deleted.")
 
     return redirect(f"/users/{post.user_id}")
 
@@ -169,6 +174,7 @@ def delete_post(post_id):
 @app.route('/tags')
 def show_tags():
     """Show list of tags."""
+
     tags = Tag.query.all()
     return render_template('tags/tags.html', tags=tags)
 
@@ -178,30 +184,30 @@ def show_tag(tag_id):
     """Show details and post for a single tag."""
 
     tag = Tag.query.get_or_404(tag_id)
-    posts_tags = PostTag.query.filter_by(tag_id=tag_id)
-    return render_template('tags/tag_detail.html', tag=tag, posts_tags=posts_tags)
+    return render_template('tags/tag_detail.html', tag=tag)
 
 
 @app.route('/tags/new')
 def show_new_tag_form():
     """Show for for adding a new tag."""
 
-    return render_template('tags/new_tag_form.html')
+    posts = Post.query.all()
+    print(posts)
+    return render_template('tags/new_tag_form.html', posts=posts)
 
 
 @app.route('/tags/new', methods=["POST"])
 def new_tag():
     """Handle adding a new tag."""
 
-    name = request.form["tag_name"]
-    user = User.query.get_or_404(user_id)
+    post_ids = [int(num) for num in request.form.getlists("posts")]
+    posts = Post.query.filter(Post.id.in_(post_ids)).all()
+    new_tag = Tag(name=request.form["name"], posts=posts)
 
-    new_post = Post(title=title,
-                    content=content, user=user)
-    db.session.add(new_post)
+    db.session.add(new_tag)
     db.session.commit()
-    flash(f"Post '{new_post.title}' added.")
-    return redirect(f"/users/{user_id}")
+    flash(f"Tag '{new_tag.name}' added.")
+    return redirect("/tags")
 
 
 @app.route('/tags/<int:tag_id>/edit')
