@@ -12,6 +12,16 @@
     <title>Blogly</title>
   </head>
   <body>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+      <div class="container">
+        {% for category, msg in messages %}
+        <p>{{ msg }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
+
     <div class="container mt-5">
       {% block content %} {% endblock %}
     </div>

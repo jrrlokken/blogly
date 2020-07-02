@@ -1,24 +1,22 @@
 {% extends 'base.html' %} {% block content %}
 <h1>{{ tag.name }}</h1>
-{% if posts_tags %}
 <ul>
-  {% for tag in posts_tags %}
-  <li><a href="/posts/{{post.id}}">{{ tag.post.title }}</a></li>
+  {% for post in tag.posts %}
+  <li><a href="/posts/{{post.id}}">{{ post.title }}</a></li>
   {% endfor %}
 </ul>
-{% endif %}
 <form class="mb-4">
   <a class="btn btn-outline-warning mr-2" href="">Back</a>
   <button
     class="btn btn-primary"
-    formaction="/posts/{{ post.id }}/edit"
+    formaction="/tags/{{ tag.id }}/edit"
     formmethod="GET"
   >
     Edit
   </button>
   <button
     class="btn btn-danger ml-2"
-    formaction="/posts/{{ post.id }}/delete"
+    formaction="/tags/{{ tag.id }}/delete"
     formmethod="POST"
   >
     Delete
